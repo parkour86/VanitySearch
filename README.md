@@ -55,6 +55,8 @@ make gpu=1 CCAP=12.0 all  # Example for RTX 50-series
 ```
 
 ---
+---
+
 # VanitySearch (Original Readme Below)
 
 VanitySearch is a bitcoin address prefix finder. If you want to generate safe private keys, use the -s option to enter your passphrase which will be used for generating a base key as for BIP38 standard (*VanitySearch.exe -s "My PassPhrase" 1MyPrefix*). You can also use *VanitySearch.exe -ps "My PassPhrase"* which will add a crypto secure seed to your passphrase.\
