@@ -1,4 +1,61 @@
-# VanitySearch
+# VanitySearch-Fork
+
+**This fork fixes the header/hash files which previously prevented the script from building.**
+
+---
+
+## Fixes to Header Files
+
+The following files now include `#include <cstdint>` at the top:
+- `hash/sha512.h`
+- `hash/sha512.cpp`
+- `hash/sha256.h`
+- `hash/sha256.cpp`
+- `Timer.h`
+
+---
+
+## Build Instructions (Linux)
+
+### 1. Install g++-12
+
+You must use g++-12 for CUDA compatibility:
+```bash
+sudo apt install g++-12
+```
+
+### 2. Update Makefile paths
+
+Edit your `Makefile` so these variables point to the correct locations:
+```
+CUDA       = /usr/local/cuda
+CXXCUDA    = /usr/bin/g++-12
+NVCC       = /usr/local/cuda/bin/nvcc
+```
+
+### 3. Determine your GPU’s compute capability (CCAP)
+
+Find your compute capability here: https://developer.nvidia.com/cuda-gpus
+
+Examples:
+```
+GTX 10-series → 6.1
+RTX 20-series → 7.5
+RTX 30-series → 8.6
+RTX 40-series → 8.9
+H100, H200   → 9.0
+RTX 50-series → 12.0
+```
+
+### 4. Build with CUDA (change CCAP using table above)
+
+```bash
+make clean
+make gpu=1 CCAP=12.0 all  # Example for RTX 50-series
+```
+
+---
+# VanitySearch (Original Readme Below)
 
 VanitySearch is a bitcoin address prefix finder. If you want to generate safe private keys, use the -s option to enter your passphrase which will be used for generating a base key as for BIP38 standard (*VanitySearch.exe -s "My PassPhrase" 1MyPrefix*). You can also use *VanitySearch.exe -ps "My PassPhrase"* which will add a crypto secure seed to your passphrase.\
 VanitySearch may not compute a good grid size for your GPU, so try different values using -g option in order to get the best performances. If you want to use GPUs and CPUs together, you may have best performances by keeping one CPU core for handling GPU(s)/CPU exchanges (use -t option to set the number of CPU threads).
