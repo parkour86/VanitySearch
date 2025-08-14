@@ -1,10 +1,27 @@
 # VanitySearch-Fork
 
-**This fork fixes the header/hash files which previously prevented the script from building.**
+**This fork fixes header/hash file issues that previously prevented the script from building, and updates the Makefile so GPU builds generate valid keys and pass checksum validation.**
 
 ---
 
-## Fixes to Header Files
+### Supported NVIDIA GPU Series
+
+The Makefile now compiles for all major NVIDIA GPU series using the following CUDA compute capabilities:
+
+Compute capabilities are found here: https://developer.nvidia.com/cuda-gpus
+
+| Compute Capability | NVIDIA Series      |
+|--------------------|-------------------|
+| 6.0, 6.1           | GTX 10-series     |
+| 7.0                | RTX 20-series     |
+| 8.0, 8.6           | RTX 30-series     |
+| 8.9                | RTX 40-series     |
+| 9.0                | H100, H200        |
+| 12.0               | RTX 50-series     |
+
+---
+
+## Bug Fix 1: Fixes to Header Files
 
 The following files now include `#include <cstdint>` at the top:
 - `hash/sha512.h`
@@ -15,43 +32,36 @@ The following files now include `#include <cstdint>` at the top:
 
 ---
 
+## Bug Fix 2: GPU Checksum ("Warning, Invalid private key checksum !")
+
+A bug in the original Makefile caused GPU builds to produce invalid private key checksums.
+
+---
+
 ## Build Instructions (Linux)
 
-### 1. Install g++-12
+### 1. Install g++-9
 
 You must use g++-12 for CUDA compatibility:
 ```bash
-sudo apt install g++-12
+sudo apt install g++-9
 ```
 
 ### 2. Update Makefile paths
 
 Edit your `Makefile` so these variables point to the correct locations:
 ```
-CUDA       = /usr/local/cuda
-CXXCUDA    = /usr/bin/g++-12
-NVCC       = /usr/local/cuda/bin/nvcc
-```
-
-### 3. Determine your GPU’s compute capability (CCAP)
-
-Find your compute capability here: https://developer.nvidia.com/cuda-gpus
-
-Examples:
-```
-GTX 10-series → 6.1
-RTX 20-series → 7.5
-RTX 30-series → 8.6
-RTX 40-series → 8.9
-H100, H200   → 9.0
-RTX 50-series → 12.0
+CXX        = g++
+CUDA       = /usr/local/cuda-12.8
+CXXCUDA    = /usr/bin/g++-9
+NVCC       = /usr/local/cuda-12.8/bin/nvcc
 ```
 
 ### 4. Build with CUDA (change CCAP using table above)
 
 ```bash
 make clean
-make gpu=1 CCAP=12.0 all  # Example for RTX 50-series
+make gpu=1 all
 ```
 
 ---
