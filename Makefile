@@ -31,9 +31,9 @@ OBJET = $(addprefix $(OBJDIR)/, \
 endif
 
 CXX        = g++
-CUDA       = /usr/local/cuda-11.8
+CUDA       = /usr/local/cuda-12.8
 CXXCUDA    = /usr/bin/g++-9
-NVCC       = /usr/local/cuda-11.8/bin/nvcc
+NVCC       = /usr/local/cuda-12.8/bin/nvcc
 # nvcc requires joint notation w/o dot, i.e. "5.2" -> "52"
 ccap       = $(shell echo $(CCAP) | tr -d '.')
 
@@ -41,14 +41,14 @@ ifdef gpu
 ifdef debug
 CXXFLAGS   = -DWITHGPU -m64  -mssse3 -Wno-write-strings -g -I. -I$(CUDA)/include
 else
-CXXFLAGS   =  -DWITHGPU -m64 -mssse3 -Wno-write-strings -O2 -I. -I$(CUDA)/include
+CXXFLAGS   =  -DWITHGPU -m64 -mssse3 -Wno-write-strings -O2 -fno-strict-aliasing -I. -I$(CUDA)/include
 endif
 LFLAGS     = -lpthread -L$(CUDA)/lib64 -lcudart
 else
 ifdef debug
 CXXFLAGS   = -m64 -mssse3 -Wno-write-strings -g -I. -I$(CUDA)/include
 else
-CXXFLAGS   =  -m64 -mssse3 -Wno-write-strings -O2 -I. -I$(CUDA)/include
+CXXFLAGS   =  -m64 -mssse3 -Wno-write-strings -O2 -fno-strict-aliasing -I. -I$(CUDA)/include
 endif
 LFLAGS     = -lpthread
 endif
@@ -59,10 +59,28 @@ endif
 ifdef gpu
 ifdef debug
 $(OBJDIR)/GPU/GPUEngine.o: GPU/GPUEngine.cu
-	$(NVCC) -G -maxrregcount=0 --ptxas-options=-v --compile --compiler-options -fPIC -ccbin $(CXXCUDA) -m64 -g -I$(CUDA)/include -gencode=arch=compute_$(ccap),code=sm_$(ccap) -o $(OBJDIR)/GPU/GPUEngine.o -c GPU/GPUEngine.cu
+	$(NVCC) -G -maxrregcount=0 --ptxas-options=-v --compile --compiler-options -fPIC -ccbin $(CXXCUDA) -m64 -g -I$(CUDA)/include \
+		-gencode=arch=compute_60,code=sm_60 \
+		-gencode=arch=compute_61,code=sm_61 \
+		-gencode=arch=compute_70,code=sm_70 \
+		-gencode=arch=compute_80,code=sm_80 \
+		-gencode=arch=compute_86,code=sm_86 \
+		-gencode=arch=compute_89,code=sm_89 \
+		-gencode=arch=compute_90,code=sm_90 \
+		-gencode=arch=compute_120,code=sm_120 \
+		-o $(OBJDIR)/GPU/GPUEngine.o -c GPU/GPUEngine.cu
 else
 $(OBJDIR)/GPU/GPUEngine.o: GPU/GPUEngine.cu
-	$(NVCC) -maxrregcount=0 --ptxas-options=-v --compile --compiler-options -fPIC -ccbin $(CXXCUDA) -m64 -O2 -I$(CUDA)/include -gencode=arch=compute_$(ccap),code=sm_$(ccap) -o $(OBJDIR)/GPU/GPUEngine.o -c GPU/GPUEngine.cu
+	$(NVCC) -maxrregcount=0 --ptxas-options=-v --compile --compiler-options -fPIC -ccbin $(CXXCUDA) -m64 -O3 -I$(CUDA)/include \
+	-gencode=arch=compute_60,code=sm_60 \
+	-gencode=arch=compute_61,code=sm_61 \
+	-gencode=arch=compute_70,code=sm_70 \
+	-gencode=arch=compute_80,code=sm_80 \
+	-gencode=arch=compute_86,code=sm_86 \
+	-gencode=arch=compute_89,code=sm_89 \
+	-gencode=arch=compute_90,code=sm_90 \
+	-gencode=arch=compute_120,code=sm_120 \
+	-o $(OBJDIR)/GPU/GPUEngine.o -c GPU/GPUEngine.cu
 endif
 endif
 
