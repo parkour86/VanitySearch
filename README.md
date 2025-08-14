@@ -42,7 +42,7 @@ A bug in the original Makefile caused GPU builds to produce invalid private key 
 
 ### 1. Install g++-9
 
-You must use g++-12 for CUDA compatibility:
+You must use g++-9 for CUDA compatibility:
 ```bash
 sudo apt install g++-9
 ```
