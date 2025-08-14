@@ -10,7 +10,7 @@ The Makefile now compiles for all major NVIDIA GPU series using the following CU
 
 Compute capabilities are found here: https://developer.nvidia.com/cuda-gpus
 
-| Compute Capability | NVIDIA Series      |
+| Compute Capability | NVIDIA Series     |
 |--------------------|-------------------|
 | 6.0, 6.1           | GTX 10-series     |
 | 7.0                | RTX 20-series     |
