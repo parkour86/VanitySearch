@@ -156,6 +156,9 @@ int _ConvertSMVer2Cores(int major, int minor) {
       {0x75,  64},
       {0x80,  64},
       {0x86, 128},
+      {0x89, 128}, // Ada Lovelace Generation (SM 8.9) AD10x class
+      {0x90, 128}, // Blackwell Generation (SM 9.0) GB200 class
+      {0xC0, 128}, // Blackwell Generation (SM 12.0) GB200 class
       {-1, -1} };
 
   int index = 0;
@@ -840,5 +843,3 @@ bool GPUEngine::Check(Secp256K1 *secp) {
   return ok;
 
 }
-
-
