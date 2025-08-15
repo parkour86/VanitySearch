@@ -59,7 +59,7 @@ CXXCUDA    = /usr/bin/g++-9
 NVCC       = /usr/local/cuda-12.8/bin/nvcc
 ```
 
-### 4. Build with CUDA (change CCAP using table above)
+### 4. Build with CUDA (CCAP option not needed)
 
 ```bash
 make clean
