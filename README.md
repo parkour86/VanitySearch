@@ -2,6 +2,8 @@
 
 **This fork fixes header/hash file issues that previously prevented the script from building, and updates the Makefile so GPU builds generate valid keys and pass checksum validation.**
 
+**Note:** This version compiles successfully for **all NVIDIA GPUs listed below** — from GTX 10-series to RTX 50-series, including H100 and H200.
+
 ---
 
 ### Supported NVIDIA GPU Series
