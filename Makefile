@@ -33,7 +33,7 @@ endif
 CXX        = g++
 CUDA       = /usr/local/cuda-12.8
 CXXCUDA    = /usr/bin/g++-9
-NVCC       = /usr/local/cuda-12.8/bin/nvcc
+NVCC       = $(CUDA)/bin/nvcc
 # nvcc requires joint notation w/o dot, i.e. "5.2" -> "52"
 ccap       = $(shell echo $(CCAP) | tr -d '.')
 
@@ -71,7 +71,7 @@ $(OBJDIR)/GPU/GPUEngine.o: GPU/GPUEngine.cu
 		-o $(OBJDIR)/GPU/GPUEngine.o -c GPU/GPUEngine.cu
 else
 $(OBJDIR)/GPU/GPUEngine.o: GPU/GPUEngine.cu
-	$(NVCC) -maxrregcount=0 --ptxas-options=-v --compile --compiler-options -fPIC -ccbin $(CXXCUDA) -m64 -O3 -I$(CUDA)/include \
+	$(NVCC) -maxrregcount=0 --ptxas-options=-v --compile --compiler-options -fPIC -ccbin $(CXXCUDA) -m64 -O2 -I$(CUDA)/include \
 	-gencode=arch=compute_60,code=sm_60 \
 	-gencode=arch=compute_61,code=sm_61 \
 	-gencode=arch=compute_70,code=sm_70 \
